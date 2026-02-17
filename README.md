@@ -2,7 +2,7 @@
 > **The Ultimate Open Source Command & Control Solution**
 > *Advanced, Stealthy, and Zero-Dependency Malware Development Framework*
 
-![Banner](https://media.discordapp.net/attachments/1471566542302089226/placeholder_banner.png)
+
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/Version-2.0.0-green.svg)]()
@@ -138,3 +138,4 @@ The developer (**0Rafas**) is strictly **NOT** responsible for any misuse of thi
 **© 2026 NrjmWitch Project. All Rights Reserved.**
 
 </div>
+
